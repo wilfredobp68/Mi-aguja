@@ -1,0 +1,15 @@
+# Entorno virtual de Python
+venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+
+# Base de datos local (se regenera con el seed)
+mi_aguja.db
+
+# Imágenes subidas por los usuarios
+uploads/
+
+# Variables de entorno con secretos reales (nunca subir a git)
+.env

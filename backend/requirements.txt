@@ -1,0 +1,19 @@
+# ─────────────────────────────────────────────────────────────
+# Dependencias del backend de "Mi Aguja"
+# Instálalas con:  pip install -r requirements.txt
+# Son librerías estándar y muy bien documentadas (a propósito).
+# ─────────────────────────────────────────────────────────────
+
+fastapi              # El framework web: crea la API y la documentación automática (/docs)
+uvicorn[standard]    # El servidor que corre la API (con recarga automática al guardar)
+
+sqlalchemy           # ORM: nos deja usar la base de datos con clases de Python en vez de SQL crudo
+
+pydantic             # Validación de datos de entrada/salida (viene incluido con FastAPI)
+pydantic-settings    # Leer configuración desde el archivo .env de forma ordenada
+email-validator      # Para validar correos electrónicos (lo usa Pydantic con EmailStr)
+
+PyJWT                # Crear y verificar los tokens JWT de inicio de sesión
+bcrypt               # Encriptar (hashear) las contraseñas de forma segura
+
+python-multipart     # Necesario para formularios y subida de imágenes (fotos de visitantes)

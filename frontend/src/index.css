@@ -1,0 +1,68 @@
+/* ===================================================================
+   index.css — Estilos globales y TEMA de "Mi Aguja".
+
+   Usamos Tailwind CSS v4. La línea @import "tailwindcss" carga todo Tailwind.
+   El bloque @theme define nuestros COLORES y TIPOGRAFÍAS como "tokens":
+   al declarar --color-verde, automáticamente podemos usar clases como
+   bg-verde, text-verde, border-verde en cualquier componente.
+
+   Paleta "Esmeralda & Oro" (definida contigo).
+   =================================================================== */
+
+@import "tailwindcss";
+
+@theme {
+  /* --- Colores de marca --- */
+  --color-verde: #1b4332;          /* primario: títulos, barra, botones */
+  --color-verde-profundo: #14352a; /* hover/presionado del verde */
+  --color-oro: #c9a84c;            /* acento de lujo (uso escaso) */
+  --color-oro-suave: #e3d3a0;      /* dorado claro para fondos sutiles */
+
+  /* --- Superficies y texto --- */
+  --color-fondo: #fafaf7;          /* fondo general (hueso/crema) */
+  --color-superficie: #ffffff;     /* tarjetas */
+  --color-texto: #1a1a1a;          /* texto principal */
+  --color-texto-suave: #5b5b5b;    /* texto secundario */
+
+  /* --- Colores con significado --- */
+  --color-urgente: #c0392b;        /* avisos urgentes / acciones destructivas */
+  --color-exito: #2e7d5b;          /* aprobado / autorizado */
+  --color-alerta: #b8860b;         /* pendiente / advertencia */
+
+  /* --- Tipografías --- */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Estilos base de toda la página */
+body {
+  margin: 0;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Los títulos usan la tipografía elegante con serifas */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+/* Números "tabulares" para que horarios y cupos no se descuadren */
+.cifras-tabulares {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Accesibilidad: si la persona pide menos movimiento en su sistema,
+   reducimos casi a cero todas las animaciones y transiciones. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

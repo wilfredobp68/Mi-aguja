@@ -1,0 +1,12 @@
+# Dependencias instaladas por npm
+node_modules/
+
+# Resultado de compilar para producción
+dist/
+
+# Logs
+npm-debug.log*
+
+# Editor
+.vscode/
+.DS_Store

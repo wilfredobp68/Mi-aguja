@@ -1,0 +1,40 @@
+# ===================================================================
+# .gitignore raíz de Mi Aguja.
+# (backend/ y frontend/ tienen los suyos para venv/ y node_modules/.)
+# Aquí van cosas comunes del sistema y del editor.
+# ===================================================================
+
+# Entorno virtual de Python (por si se crea en otra ruta)
+venv/
+backend/venv/
+
+# Dependencias de Node
+node_modules/
+
+# Resultado de compilar
+dist/
+
+# Base de datos local (se regenera con el seed) e imágenes subidas
+*.db
+backend/uploads/
+
+# Variables de entorno con secretos
+.env
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Python compilado
+__pycache__/
+*.pyc
