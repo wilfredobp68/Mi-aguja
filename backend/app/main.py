@@ -31,6 +31,13 @@ from .routers import (
 #    una herramienta de migraciones como Alembic.
 Base.metadata.create_all(bind=engine)
 
+# 1b. Si la variable de entorno SEMBRAR_AL_INICIAR es "1" (la usamos en la nube),
+#     carga los datos de ejemplo al arrancar. Es seguro: el seed no duplica nada
+#     si la base ya tiene datos.
+if os.getenv("SEMBRAR_AL_INICIAR") == "1":
+    from .seed import crear_datos
+    crear_datos()
+
 app = FastAPI(
     title="Mi Aguja API",
     description="API para la gestión de residenciales cerrados de lujo. "

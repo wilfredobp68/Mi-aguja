@@ -8,7 +8,9 @@
 // ===================================================================
 
 // Dirección donde corre el backend de FastAPI.
-export const API_BASE = "http://localhost:8000";
+// En desarrollo: localhost. En la nube: la variable VITE_API_URL (se define en
+// Render al compilar) apunta al backend publicado, ej. "https://mi-aguja-api.onrender.com".
+export const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 // Nombre con el que guardamos el token en el navegador (localStorage).
 const CLAVE_TOKEN = "mi_aguja_token";

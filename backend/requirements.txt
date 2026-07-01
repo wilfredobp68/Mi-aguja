@@ -17,3 +17,5 @@ PyJWT                # Crear y verificar los tokens JWT de inicio de sesión
 bcrypt               # Encriptar (hashear) las contraseñas de forma segura
 
 python-multipart     # Necesario para formularios y subida de imágenes (fotos de visitantes)
+
+psycopg2-binary      # Driver de PostgreSQL (la base de datos de producción, en la nube)

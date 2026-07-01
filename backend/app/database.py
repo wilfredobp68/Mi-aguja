@@ -16,11 +16,19 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 from .config import config
 
-# SQLite necesita este argumento extra para funcionar bien con FastAPI.
-# (Con PostgreSQL no haría falta; por eso lo activamos solo si usamos SQLite.)
-connect_args = {"check_same_thread": False} if config.DATABASE_URL.startswith("sqlite") else {}
+# Algunos proveedores (como Render) entregan la URL como "postgres://...",
+# pero SQLAlchemy espera "postgresql://...". Lo corregimos aquí en silencio.
+url_bd = config.DATABASE_URL
+if url_bd.startswith("postgres://"):
+    url_bd = url_bd.replace("postgres://", "postgresql://", 1)
 
-engine = create_engine(config.DATABASE_URL, connect_args=connect_args)
+# SQLite necesita este argumento extra para funcionar bien con FastAPI.
+# (Con PostgreSQL no hace falta; por eso lo activamos solo si usamos SQLite.)
+connect_args = {"check_same_thread": False} if url_bd.startswith("sqlite") else {}
+
+# pool_pre_ping=True: antes de usar una conexión "vieja", verifica que siga viva.
+# Evita errores raros cuando la base de datos en la nube cierra conexiones inactivas.
+engine = create_engine(url_bd, connect_args=connect_args, pool_pre_ping=True)
 
 # Cada sesión es una "conversación" temporal con la base de datos.
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

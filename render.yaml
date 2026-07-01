@@ -1,0 +1,53 @@
+# ===================================================================
+# render.yaml — El "plano" de despliegue para Render (render.com).
+#
+# Cuando conectes este repositorio en Render como "Blueprint", Render lee
+# este archivo y crea automáticamente los DOS servicios:
+#
+#   1. mi-aguja-api : el backend de FastAPI (Python).
+#   2. mi-aguja-web : el frontend de React, compilado y servido como sitio estático.
+#
+# Las variables marcadas con "sync: false" se pegan A MANO en el panel de
+# Render (son secretos o dependen de otros servicios). Ver DEPLOY.md.
+# ===================================================================
+
+services:
+  # ---------- Backend (FastAPI) ----------
+  - type: web
+    name: mi-aguja-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      # La URL de PostgreSQL (de Neon). Se pega a mano en el panel de Render.
+      - key: DATABASE_URL
+        sync: false
+      # Render genera una clave secreta larga y aleatoria automáticamente.
+      - key: SECRET_KEY
+        generateValue: true
+      # Al arrancar, siembra los datos demo si la base está vacía (es idempotente).
+      - key: SEMBRAR_AL_INICIAR
+        value: "1"
+
+  # ---------- Frontend (React compilado, sitio estático) ----------
+  - type: web
+    name: mi-aguja-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # La URL pública del backend (ej. https://mi-aguja-api.onrender.com).
+      # Se pega a mano DESPUÉS de que el backend exista. Ver DEPLOY.md.
+      - key: VITE_API_URL
+        sync: false
+    # React Router maneja las rutas en el navegador: cualquier ruta debe
+    # devolver index.html (si no, recargar en /residente daría error 404).
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
