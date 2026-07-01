@@ -61,17 +61,26 @@ corromper `mi_aguja.db`. Mitigaciones:
 - **Branding configurable:** `src/branding.js` (nombre, subtítulo, logo, portada). Imágenes en
   `frontend/public/`. Para personalizar una demo de cliente, editar ese archivo.
 - **Páginas:** `src/pages/<rol>/`. **Puente con la API:** `src/api/client.js`.
-- **Helpers:** `src/utils.js` (`fechaCorta`, `fechaHora`, `haceCuanto`, `hoyISO`, `cordobas`).
+- **Helpers:** `src/utils.js` (`fechaCorta`, `fechaHora`, `haceCuanto`, `hoyISO`, `cordobas`,
+  `fotoAmenidad` — mapea nombre de amenidad → foto en `public/amenidades/`).
+- **Navegación:** la barra inferior lleva máx. 5 ítems por rol (`NAV_* = SECCIONES_*.slice(0,4)`
+  en App.jsx); el Inicio muestra TODAS las secciones como burbujas.
 
 ## Módulos (estado actual)
 1. Avisos/comunicados (banner rojo para urgentes)
-2. Reservas de amenidades (disponibilidad por franja)
+2. Reservas de amenidades (disponibilidad por franja; foto hero de la amenidad)
 3. Control de visitantes (guardia registra → residente autoriza → guardia ve resultado, polling 4s)
 4. Pases de acceso (código 6 dígitos + QR, visita/personal)
 5. Encomiendas (residente anuncia delivery → guardia lo deja pasar)
 6. **Pagos (VISTA DEMO, solo frontend, sin cobro real)** — agua/luz/cuota casa/fee condominio +
    historial de pagados. El pago es simulación. Cuando se conecte el banco (convenio de
    recaudación) esta pantalla hará el cobro real.
+7. Reportes de mantenimiento (residente reporta con foto → admin: recibido/en_proceso/resuelto)
+8. Botón SOS (residente dispara → banda roja para guardia/admin vía polling → marcar atendida)
+9. Encuestas (admin crea con 2-5 opciones y fecha de cierre → residentes votan 1 vez → barras)
+
+Las imágenes de marca (logo/portada/amenidades) fueron generadas con IA (Higgsfield) y viven en
+`frontend/public/` como .webp. La cuenta Higgsfield de la dueña es plan free (1 job a la vez).
 
 ## Cuentas de prueba (seed)
 `admin@miaguja.com`/`admin123` · `ana@miaguja.com`/`ana123` · `carlos@miaguja.com`/`carlos123` ·
