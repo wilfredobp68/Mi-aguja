@@ -15,6 +15,7 @@ from datetime import datetime, date
 
 from sqlalchemy import (
     Column, Integer, String, Text, Boolean, DateTime, Date, ForeignKey,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import relationship
 
@@ -187,3 +188,105 @@ class Encomienda(Base):
     # Dos relaciones hacia Usuario: indicamos la columna de cada una.
     residente = relationship("Usuario", foreign_keys=[residente_id])
     guardia = relationship("Usuario", foreign_keys=[guardia_id])
+
+
+class Reporte(Base):
+    """
+    Módulo 7: reportes de mantenimiento / incidentes.
+
+    El residente reporta un problema en las áreas comunes (una lámpara quebrada,
+    una fuga de agua...) con foto opcional. La administración le da seguimiento
+    cambiando el estado, y el residente ve el avance de su reporte.
+    """
+    __tablename__ = "reportes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    residente_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
+
+    # Categoría: "alumbrado" | "jardineria" | "agua" | "calles" | "seguridad" | "otro"
+    categoria = Column(String, nullable=False, default="otro")
+    descripcion = Column(Text, nullable=False)
+    foto_url = Column(String, nullable=True)  # opcional
+
+    # Estado: "recibido" | "en_proceso" | "resuelto"
+    estado = Column(String, nullable=False, default="recibido")
+    comentario_admin = Column(String, nullable=True)  # respuesta de la administración
+
+    created_at = Column(DateTime, default=datetime.now)
+    actualizado_en = Column(DateTime, nullable=True)  # última vez que el admin lo tocó
+
+    residente = relationship("Usuario")
+
+
+class AlertaSOS(Base):
+    """
+    Módulo 8: botón de emergencia (SOS).
+
+    El residente presiona el botón SOS y se crea una alerta "activa" con su nombre
+    y casa. El guardia (y el admin) la ven de inmediato vía polling y la marcan
+    como "atendida" cuando responden.
+    """
+    __tablename__ = "alertas_sos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    residente_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
+    mensaje = Column(String, nullable=True)  # opcional: "emergencia médica", etc.
+
+    # Estado: "activa" | "atendida"
+    estado = Column(String, nullable=False, default="activa")
+
+    created_at = Column(DateTime, default=datetime.now)
+    atendida_en = Column(DateTime, nullable=True)
+    atendida_por_id = Column(Integer, ForeignKey("usuarios.id"), nullable=True)
+
+    residente = relationship("Usuario", foreign_keys=[residente_id])
+    atendida_por = relationship("Usuario", foreign_keys=[atendida_por_id])
+
+
+class Encuesta(Base):
+    """
+    Módulo 9: encuestas y votaciones de la comunidad.
+
+    El admin crea una encuesta con varias opciones y una fecha de cierre.
+    Cada residente vota UNA sola vez. Los resultados se ven en vivo.
+    """
+    __tablename__ = "encuestas"
+
+    id = Column(Integer, primary_key=True, index=True)
+    pregunta = Column(String, nullable=False)
+    descripcion = Column(Text, nullable=True)
+    cierra_el = Column(Date, nullable=False)  # último día para votar (inclusive)
+
+    creada_por_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+
+    creada_por = relationship("Usuario")
+    # cascade: al borrar la encuesta se borran sus opciones y votos.
+    opciones = relationship("OpcionEncuesta", cascade="all, delete-orphan", backref="encuesta")
+    votos = relationship("Voto", cascade="all, delete-orphan")
+
+    @property
+    def abierta(self) -> bool:
+        """¿Todavía se puede votar? (hasta el día de cierre, inclusive)"""
+        return date.today() <= self.cierra_el
+
+
+class OpcionEncuesta(Base):
+    """Una opción de respuesta de una encuesta (ej. 'Sí', 'No', 'Me da igual')."""
+    __tablename__ = "opciones_encuesta"
+
+    id = Column(Integer, primary_key=True, index=True)
+    encuesta_id = Column(Integer, ForeignKey("encuestas.id"), nullable=False)
+    texto = Column(String, nullable=False)
+
+
+class Voto(Base):
+    """El voto de un usuario en una encuesta. La restricción única garantiza 1 voto por persona."""
+    __tablename__ = "votos"
+    __table_args__ = (UniqueConstraint("encuesta_id", "usuario_id", name="un_voto_por_persona"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    encuesta_id = Column(Integer, ForeignKey("encuestas.id"), nullable=False)
+    opcion_id = Column(Integer, ForeignKey("opciones_encuesta.id"), nullable=False)
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.now)

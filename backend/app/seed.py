@@ -23,10 +23,12 @@ def crear_datos():
     db = SessionLocal()
 
     try:
-        # Si ya hay usuarios, no volvemos a sembrar.
+        # Si ya hay usuarios, no volvemos a sembrar lo básico...
         if db.query(models.Usuario).first():
             print("[i] La base de datos ya tiene datos. No se sembro de nuevo.")
             print("    (Para reiniciar: borra backend/mi_aguja.db y corre 'python -m app.seed')")
+            # ...pero sí sembramos los módulos nuevos si están vacíos (Iteración 6).
+            sembrar_modulos_nuevos(db)
             return
 
         # ─────────────── Usuarios ───────────────
@@ -190,6 +192,9 @@ def crear_datos():
 
         db.commit()
 
+        # ─────────────── Módulos nuevos (Iteración 6) ───────────────
+        sembrar_modulos_nuevos(db)
+
         # ─────────────── Resumen / credenciales ───────────────
         print("\n=== Datos de ejemplo creados con exito! ===\n")
         print("Inicia sesion con cualquiera de estas cuentas (correo / contrasena):\n")
@@ -204,6 +209,68 @@ def crear_datos():
 
     finally:
         db.close()
+
+
+def sembrar_modulos_nuevos(db):
+    """
+    Datos de ejemplo para los módulos de la Iteración 6 (reportes, encuestas).
+    Es seguro correrlo sobre una base existente: solo siembra lo que esté vacío.
+    """
+    ana = db.query(models.Usuario).filter_by(email="ana@miaguja.com").first()
+    carlos = db.query(models.Usuario).filter_by(email="carlos@miaguja.com").first()
+    admin = db.query(models.Usuario).filter_by(email="admin@miaguja.com").first()
+    if not (ana and carlos and admin):
+        return  # sin las cuentas demo no hay a quién asignarle los datos
+
+    # ── Reportes de mantenimiento (Módulo 7) ──
+    if not db.query(models.Reporte).first():
+        db.add_all([
+            models.Reporte(
+                residente_id=ana.id, categoria="alumbrado",
+                descripcion="La lámpara del parque central parpadea desde anoche.",
+                estado="en_proceso",
+                comentario_admin="El electricista viene mañana por la mañana.",
+                actualizado_en=datetime.now(),
+            ),
+            models.Reporte(
+                residente_id=carlos.id, categoria="jardineria",
+                descripcion="Hay una rama caída bloqueando la acera frente a la Casa 27.",
+                estado="recibido",
+            ),
+            models.Reporte(
+                residente_id=ana.id, categoria="agua",
+                descripcion="Fuga pequeña en el aspersor de la entrada.",
+                estado="resuelto",
+                comentario_admin="Reparado por el equipo de mantenimiento. ¡Gracias por avisar!",
+                actualizado_en=datetime.now() - timedelta(days=1),
+            ),
+        ])
+        print("[+] Reportes de ejemplo creados.")
+
+    # ── Encuesta de la comunidad (Módulo 9) ──
+    if not db.query(models.Encuesta).first():
+        encuesta = models.Encuesta(
+            pregunta="¿Aprobamos repintar el portón principal en color verde esmeralda?",
+            descripcion="El presupuesto ya está aprobado por la junta. Su voto define el color.",
+            cierra_el=date.today() + timedelta(days=7),
+            creada_por_id=admin.id,
+            opciones=[
+                models.OpcionEncuesta(texto="Sí, verde esmeralda"),
+                models.OpcionEncuesta(texto="No, mantener el actual"),
+                models.OpcionEncuesta(texto="Prefiero otro color"),
+            ],
+        )
+        db.add(encuesta)
+        db.flush()  # para obtener los ids de las opciones
+        # Un voto de ejemplo (Ana ya votó; Carlos aún puede votar en el demo).
+        db.add(models.Voto(
+            encuesta_id=encuesta.id,
+            opcion_id=encuesta.opciones[0].id,
+            usuario_id=ana.id,
+        ))
+        print("[+] Encuesta de ejemplo creada.")
+
+    db.commit()
 
 
 if __name__ == "__main__":

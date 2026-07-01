@@ -11,6 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import { useContadores } from "./useContadores";
 import { Tarjeta } from "./UI";
 import ResumenHoy from "./ResumenHoy";
+import BotonSOS from "./BotonSOS";
 import { Cascada, CascadaItem } from "./Cascada";
 
 export default function MenuInicio({ secciones = [] }) {
@@ -20,6 +21,13 @@ export default function MenuInicio({ secciones = [] }) {
   return (
     <div>
       <ResumenHoy />
+
+      {/* Botón de emergencia: solo para residentes, arriba de las burbujas */}
+      {usuario?.rol === "residente" && (
+        <div className="mb-4">
+          <BotonSOS />
+        </div>
+      )}
 
       <Cascada className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {secciones.map((s) => {

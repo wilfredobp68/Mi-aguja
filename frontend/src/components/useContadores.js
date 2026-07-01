@@ -3,7 +3,7 @@
 //
 // Lo usan tanto la pantalla de Inicio (burbujas) como la barra inferior.
 // Consulta cada 15 segundos según el rol:
-//   - admin   -> reservas pendientes de aprobar.
+//   - admin   -> reservas pendientes de aprobar + reportes abiertos.
 //   - guardia -> encomiendas esperadas (deliveries anunciados).
 // ===================================================================
 
@@ -18,8 +18,16 @@ export function useContadores(rol) {
     async function cargar() {
       try {
         if (rol === "admin") {
-          const pendientes = await api.get("/reservas?estado=pendiente");
-          if (activo) setContadores({ reservasPendientes: pendientes.length });
+          const [pendientes, abiertos] = await Promise.all([
+            api.get("/reservas?estado=pendiente"),
+            api.get("/reportes?estado=abiertos"),
+          ]);
+          if (activo) {
+            setContadores({
+              reservasPendientes: pendientes.length,
+              reportesAbiertos: abiertos.length,
+            });
+          }
         } else if (rol === "guardia") {
           const esperadas = await api.get("/encomiendas/esperadas");
           if (activo) setContadores({ encomiendasEsperadas: esperadas.length });

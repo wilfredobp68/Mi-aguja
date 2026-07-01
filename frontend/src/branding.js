@@ -15,6 +15,6 @@ export const branding = {
   nombre: "Mi Aguja",
   subtitulo: "Residencial privado",
   logoTexto: "A",
-  logoUrl: null,
-  portadaUrl: null,
+  logoUrl: "/logo.webp",
+  portadaUrl: "/portada.webp",
 };

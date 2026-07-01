@@ -8,6 +8,7 @@ import { Plus, Dumbbell, Users, Clock } from "lucide-react";
 import { api } from "../../api/client";
 import { Boton, Tarjeta, MensajeError, SkeletonLista, EstadoVacio } from "../../components/UI";
 import HojaInferior from "../../components/HojaInferior";
+import { fotoAmenidad } from "../../utils";
 
 export default function AdminAmenidades() {
   const [amenidades, setAmenidades] = useState(null);
@@ -129,23 +130,33 @@ export default function AdminAmenidades() {
         <EstadoVacio icono={Dumbbell} titulo="No hay amenidades" descripcion="Cree la primera con el botón de arriba." />
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">
-          {amenidades.map((a) => (
-            <Tarjeta key={a.id} className="p-5">
-              <div className="flex items-center gap-2 text-verde mb-1">
-                <Dumbbell className="w-5 h-5 text-oro" />
-                <h3 className="text-lg font-bold">{a.nombre}</h3>
-              </div>
-              {a.descripcion && <p className="text-texto-suave text-sm mb-3">{a.descripcion}</p>}
-              <div className="flex gap-4 text-sm text-texto-suave">
-                <span className="inline-flex items-center gap-1">
-                  <Users className="w-4 h-4" /> {a.capacidad_maxima} personas
-                </span>
-                <span className="inline-flex items-center gap-1 cifras-tabulares">
-                  <Clock className="w-4 h-4" /> {a.hora_apertura} – {a.hora_cierre}
-                </span>
-              </div>
-            </Tarjeta>
-          ))}
+          {amenidades.map((a) => {
+            const foto = fotoAmenidad(a.nombre);
+            return (
+              <Tarjeta key={a.id} className="overflow-hidden">
+                {/* Foto estilo hotel boutique (o degradado elegante si no hay) */}
+                {foto ? (
+                  <img src={foto} alt={a.nombre} className="w-full h-36 object-cover" />
+                ) : (
+                  <div className="w-full h-36 bg-gradient-to-br from-verde to-verde-profundo grid place-items-center">
+                    <Dumbbell className="w-10 h-10 text-oro/80" />
+                  </div>
+                )}
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-verde mb-1">{a.nombre}</h3>
+                  {a.descripcion && <p className="text-texto-suave text-sm mb-3">{a.descripcion}</p>}
+                  <div className="flex gap-4 text-sm text-texto-suave">
+                    <span className="inline-flex items-center gap-1">
+                      <Users className="w-4 h-4" /> {a.capacidad_maxima} personas
+                    </span>
+                    <span className="inline-flex items-center gap-1 cifras-tabulares">
+                      <Clock className="w-4 h-4" /> {a.hora_apertura} – {a.hora_cierre}
+                    </span>
+                  </div>
+                </div>
+              </Tarjeta>
+            );
+          })}
         </div>
       )}
     </div>

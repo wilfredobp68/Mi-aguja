@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
 import { CalendarPlus, CheckCircle2, RefreshCw, WifiOff } from "lucide-react";
 import { api } from "../../api/client";
 import { Boton, Tarjeta, MensajeError, CargandoSeccion } from "../../components/UI";
-import { hoyISO } from "../../utils";
+import { hoyISO, fotoAmenidad } from "../../utils";
 
 export default function ResidenteReservar() {
   const navegar = useNavigate();
@@ -118,8 +118,24 @@ export default function ResidenteReservar() {
     <div>
       <h1 className="text-2xl font-bold text-verde mb-5">Reservar una amenidad</h1>
 
-      <Tarjeta className="p-5 mb-6">
-        <div className="grid sm:grid-cols-2 gap-4">
+      <Tarjeta className="mb-6 overflow-hidden">
+        {/* Foto de la amenidad elegida (cambia al cambiar de amenidad) */}
+        {amenidadActual && fotoAmenidad(amenidadActual.nombre) && (
+          <div className="relative">
+            <img
+              src={fotoAmenidad(amenidadActual.nombre)}
+              alt={amenidadActual.nombre}
+              className="w-full h-40 sm:h-48 object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-5 pb-3 pt-10">
+              <p className="text-white font-display text-xl font-bold">{amenidadActual.nombre}</p>
+              {amenidadActual.descripcion && (
+                <p className="text-white/85 text-sm">{amenidadActual.descripcion}</p>
+              )}
+            </div>
+          </div>
+        )}
+        <div className="p-5 grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Amenidad</label>
             <select

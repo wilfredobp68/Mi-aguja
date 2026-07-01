@@ -23,6 +23,7 @@ from .config import config
 from .database import Base, engine
 from .routers import (
     auth_router, avisos, reservas, visitantes, uploads, usuarios, pases, encomiendas,
+    reportes, sos, encuestas,
 )
 
 # 1. Crea las tablas en la base de datos a partir de los modelos (si no existen ya).
@@ -63,6 +64,9 @@ app.include_router(reservas.router)
 app.include_router(visitantes.router)
 app.include_router(pases.router)
 app.include_router(encomiendas.router)
+app.include_router(reportes.router)
+app.include_router(sos.router)
+app.include_router(encuestas.router)
 app.include_router(uploads.router)
 
 

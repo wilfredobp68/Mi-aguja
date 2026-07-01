@@ -45,3 +45,19 @@ export function cordobas(valor) {
     minimumFractionDigits: 2,
   }).format(valor || 0);
 }
+
+// Devuelve la foto de una amenidad según su nombre (las fotos viven en
+// frontend/public/amenidades/). Si no hay foto que coincida, devuelve null
+// y el componente muestra un fondo degradado elegante en su lugar.
+export function fotoAmenidad(nombre) {
+  const n = (nombre || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, ""); // quita tildes: "salón" -> "salon"
+
+  if (n.includes("piscina") || n.includes("pool")) return "/amenidades/piscina.webp";
+  if (n.includes("club") || n.includes("salon") || n.includes("evento")) return "/amenidades/casa-club.webp";
+  if (n.includes("cancha") || n.includes("tenis") || n.includes("deport")) return "/amenidades/cancha-de-tenis.webp";
+  if (n.includes("gimnasio") || n.includes("gym")) return "/amenidades/gimnasio.webp";
+  return null;
+}

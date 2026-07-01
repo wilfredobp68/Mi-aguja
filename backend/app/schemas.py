@@ -201,3 +201,76 @@ class EncomiendaOut(BaseModel):
     hora_ingreso: Optional[datetime] = None
     residente: UsuarioMini
     guardia: Optional[UsuarioMini] = None
+
+
+# ───────────────────────── Módulo 7: Reportes ─────────────────────────
+class ReporteCrear(BaseModel):
+    categoria: Literal["alumbrado", "jardineria", "agua", "calles", "seguridad", "otro"] = "otro"
+    descripcion: str
+    foto_url: Optional[str] = None
+
+
+class ReporteActualizar(BaseModel):
+    """Lo que envía el admin al darle seguimiento a un reporte."""
+    estado: Literal["recibido", "en_proceso", "resuelto"]
+    comentario_admin: Optional[str] = None
+
+
+class ReporteOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    categoria: str
+    descripcion: str
+    foto_url: Optional[str] = None
+    estado: str
+    comentario_admin: Optional[str] = None
+    created_at: datetime
+    actualizado_en: Optional[datetime] = None
+    residente: UsuarioMini
+
+
+# ───────────────────────── Módulo 8: SOS ─────────────────────────
+class SOSCrear(BaseModel):
+    mensaje: Optional[str] = None
+
+
+class SOSOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    mensaje: Optional[str] = None
+    estado: str
+    created_at: datetime
+    atendida_en: Optional[datetime] = None
+    residente: UsuarioMini
+    atendida_por: Optional[UsuarioMini] = None
+
+
+# ───────────────────────── Módulo 9: Encuestas ─────────────────────────
+class EncuestaCrear(BaseModel):
+    pregunta: str
+    descripcion: Optional[str] = None
+    cierra_el: date
+    opciones: list[str]  # ej. ["Sí", "No"]
+
+
+class VotarIn(BaseModel):
+    opcion_id: int
+
+
+class OpcionResultado(BaseModel):
+    """Una opción con su conteo de votos (para mostrar resultados en vivo)."""
+    id: int
+    texto: str
+    votos: int
+
+
+class EncuestaOut(BaseModel):
+    id: int
+    pregunta: str
+    descripcion: Optional[str] = None
+    cierra_el: date
+    abierta: bool
+    created_at: datetime
+    opciones: list[OpcionResultado]
+    total_votos: int
+    mi_voto: Optional[int] = None  # id de la opción que YO voté (None = no he votado)

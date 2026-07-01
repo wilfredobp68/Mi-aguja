@@ -15,6 +15,7 @@ import { LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useContadores } from "./useContadores";
 import VigilanteVisitantes from "./VigilanteVisitantes";
+import VigilanteSOS from "./VigilanteSOS";
 import BarraInferior from "./BarraInferior";
 import { branding } from "../branding";
 
@@ -35,6 +36,9 @@ export default function Layout({ nav = [], rol }) {
     <div className="min-h-dvh">
       {/* Para el residente: aviso de visitantes siempre visible arriba */}
       {rol === "residente" && <VigilanteVisitantes />}
+
+      {/* Para guardia y admin: la alarma de emergencias SOS (banda roja) */}
+      {(rol === "guardia" || rol === "admin") && <VigilanteSOS />}
 
       {/* ---------- Barra superior ---------- */}
       <header className="bg-verde text-white">
