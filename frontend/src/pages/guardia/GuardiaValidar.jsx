@@ -2,30 +2,33 @@
 // GuardiaValidar.jsx — Módulo 4 (vista guardia): validar un código.
 //
 // El visitante o trabajador llega con su código de 6 dígitos (o su QR).
-// El guardia lo ESCRIBE aquí y el sistema dice si es válido. Si lo es, el
-// acceso queda registrado automáticamente en el log de visitantes.
+// El guardia puede ESCANEAR el QR con la cámara del teléfono (sin hardware
+// especial) o escribir el código a mano. Si es válido, el acceso queda
+// registrado automáticamente en el log de visitantes.
 // Pantalla grande y simple, pensada para la portería.
 // ===================================================================
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, XCircle, KeyRound } from "lucide-react";
+import { CheckCircle2, XCircle, KeyRound, ScanLine, X } from "lucide-react";
 import { api } from "../../api/client";
 import { Boton, Tarjeta, MensajeError } from "../../components/UI";
+import EscanerQR from "../../components/EscanerQR";
 
 export default function GuardiaValidar() {
   const [codigo, setCodigo] = useState("");
   const [resultado, setResultado] = useState(null); // respuesta del backend
   const [error, setError] = useState("");
   const [validando, setValidando] = useState(false);
+  const [escaneando, setEscaneando] = useState(false); // ¿cámara abierta?
 
-  async function validar(e) {
-    e.preventDefault();
+  // Valida un código (venga del teclado o del escáner de QR).
+  async function validarCodigo(cod) {
     setError("");
     setResultado(null);
     setValidando(true);
     try {
-      const res = await api.post("/pases/validar", { codigo });
+      const res = await api.post("/pases/validar", { codigo: cod });
       setResultado(res);
       setCodigo(""); // limpiamos para el siguiente
     } catch (err) {
@@ -35,12 +38,57 @@ export default function GuardiaValidar() {
     }
   }
 
+  function validar(e) {
+    e.preventDefault();
+    validarCodigo(codigo);
+  }
+
+  // Cuando el escáner encuentra un QR: cerramos la cámara y validamos al tiro.
+  // useCallback evita que el escáner se reinicie en cada render.
+  const alEscanear = useCallback((texto) => {
+    setEscaneando(false);
+    validarCodigo(texto);
+  }, []);
+
   return (
     <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-verde mb-1">Validar código</h1>
-      <p className="text-texto-suave mb-5">Escribe el código de 6 dígitos del visitante.</p>
+      <h1 className="text-2xl font-bold text-verde mb-1">Validar acceso</h1>
+      <p className="text-texto-suave mb-5">
+        Escanea el QR del pase con la cámara, o escribe el código de 6 dígitos.
+      </p>
 
-      <Tarjeta className="p-6">
+      <Tarjeta className="p-6 space-y-4">
+        {/* ---------- Escanear con la cámara ---------- */}
+        {escaneando ? (
+          <div className="space-y-3">
+            <EscanerQR onCodigo={alEscanear} />
+            <Boton variante="secundario" className="w-full" onClick={() => setEscaneando(false)}>
+              <X className="w-5 h-5" />
+              Cerrar cámara
+            </Boton>
+          </div>
+        ) : (
+          <Boton
+            variante="oro"
+            className="w-full text-lg min-h-14"
+            onClick={() => {
+              setResultado(null);
+              setError("");
+              setEscaneando(true);
+            }}
+          >
+            <ScanLine className="w-6 h-6" />
+            Escanear QR con la cámara
+          </Boton>
+        )}
+
+        {/* ---------- O escribirlo a mano ---------- */}
+        <div className="flex items-center gap-3 text-texto-suave text-sm">
+          <span className="flex-1 h-px bg-black/10" />
+          o escribe el código
+          <span className="flex-1 h-px bg-black/10" />
+        </div>
+
         <form onSubmit={validar} className="space-y-4">
           <input
             value={codigo}
