@@ -73,6 +73,30 @@ Neon la regala y **no se borra a los 30 días** (la de Render sí).
 
 ---
 
+## Paso 5 — 📱 "Instalarla" en el celular (así la usan los residentes)
+
+Mi Aguja **no se descarga de Play Store ni App Store** (eso es la Fase 2, con la
+app nativa). Es una **PWA**: se instala desde el navegador en 10 segundos y queda
+con su icono dorado en la pantalla de inicio, a pantalla completa, como cualquier app.
+
+**En Android (Chrome):**
+1. Abre la URL de la app en Chrome.
+2. Menú `⋮` (arriba a la derecha) → **"Agregar a pantalla de inicio"**
+   (o "Instalar app" si Chrome lo ofrece).
+3. Listo: aparece el icono de Mi Aguja como una app más.
+
+**En iPhone (Safari):**
+1. Abre la URL en Safari.
+2. Botón **Compartir** (el cuadrito con flecha, abajo al centro).
+3. **"Agregar a pantalla de inicio"** → **Agregar**.
+
+**Para repartirla a los residentes:** manda la URL por el grupo de WhatsApp del
+residencial con las dos instrucciones de arriba. Punto de venta para el pitch:
+*"sin tiendas, sin esperas de aprobación de Google/Apple, y las actualizaciones
+les llegan solas al instante".*
+
+---
+
 ## ⚠️ Cosas que hay que saber del plan gratuito
 
 | Tema | Detalle |
