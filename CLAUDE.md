@@ -8,8 +8,9 @@ App para gestionar **residenciales cerrados de lujo en Nicaragua**. "La aguja" =
 3 roles (**admin**, **residente**, **guardia**) que comparten módulos. Proyecto separado de
 CASABELLA (esa es el `index.html` de la carpeta padre — **NO tocar CASABELLA**).
 
-## Preferencias de la dueña (importante)
-- Es **programadora principiante que aprende construyendo**. Código **simple y legible**, con
+## Preferencias del dueño (importante)
+- Se llama **Wilfredo** (es hombre; la cuenta de Windows dice "maria" — no confundirse).
+- Es **programador principiante que aprende construyendo**. Código **simple y legible**, con
   **comentarios en español**. Nada de abstracciones ingeniosas innecesarias.
 - Para features grandes: **proponer el plan y esperar aprobación** antes de programar.
 - **Mobile-first** y botones grandes (usuarios mayores, poco técnicos).
@@ -32,7 +33,7 @@ CASABELLA (esa es el `index.html` de la carpeta padre — **NO tocar CASABELLA**
 ## ⚠️ OneDrive (causa raíz de muchos problemas)
 Si el proyecto está dentro de OneDrive, la sincronización **mata el proceso de uvicorn** y puede
 corromper `mi_aguja.db`. Mitigaciones:
-- Correr el backend **sin `--reload`** y **desde la propia PowerShell de la dueña** (los procesos
+- Correr el backend **sin `--reload`** y **desde la propia PowerShell de Wilfredo** (los procesos
   en segundo plano de Claude se mueren solos).
 - Comando: `uvicorn app.main:app --host 127.0.0.1 --port 8000`
 - Si sale error 10048 (puerto ocupado): `Get-Process python | Stop-Process -Force` y relanzar.
@@ -40,7 +41,7 @@ corromper `mi_aguja.db`. Mitigaciones:
 
 ## Cómo correr / verificar
 - Backend y frontend: ver [README.md](README.md) (dos terminales PowerShell).
-- Para verificar cambios de frontend sin tocar el server de la dueña: `node_modules/vite/bin/vite.js build`
+- Para verificar cambios de frontend sin tocar el server de Wilfredo: `node_modules/vite/bin/vite.js build`
   (compila y detecta errores de sintaxis/imports). El dev server con HMR recarga solo.
 - Antes de una demo: confirmar que `http://localhost:8000` responde y que el frontend carga.
 
@@ -80,7 +81,7 @@ corromper `mi_aguja.db`. Mitigaciones:
 9. Encuestas (admin crea con 2-5 opciones y fecha de cierre → residentes votan 1 vez → barras)
 
 Las imágenes de marca (logo/portada/amenidades) fueron generadas con IA (Higgsfield) y viven en
-`frontend/public/` como .webp. La cuenta Higgsfield de la dueña es plan free (1 job a la vez).
+`frontend/public/` como .webp. La cuenta Higgsfield de Wilfredo es plan free (1 job a la vez).
 
 ## Cuentas de prueba (seed)
 `admin@miaguja.com`/`admin123` · `ana@miaguja.com`/`ana123` · `carlos@miaguja.com`/`carlos123` ·
