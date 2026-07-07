@@ -15,6 +15,6 @@ export const branding = {
   nombre: "Mi Aguja",
   subtitulo: "Residencial privado",
   logoTexto: "A",
-  logoUrl: "/logo.webp",
+  logoUrl: "/icono-512.png", // la talanquera (mismo icono de la app, marca unificada)
   portadaUrl: "/portada.webp",
 };

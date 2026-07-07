@@ -45,7 +45,7 @@ export default function Layout({ nav = [], rol }) {
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {branding.logoUrl ? (
-              <img src={branding.logoUrl} alt={branding.nombre} className="w-9 h-9 rounded-full object-cover" />
+              <img src={branding.logoUrl} alt={branding.nombre} className="w-9 h-9 rounded-lg object-cover" />
             ) : (
               <span className="w-9 h-9 rounded-full bg-oro grid place-items-center text-verde font-bold font-display">
                 {branding.logoTexto}
