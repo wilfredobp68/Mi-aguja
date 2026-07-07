@@ -12,6 +12,69 @@ usando **planes gratuitos**. Al final tendrás:
 
 ---
 
+## 🍽️ Para qué sirve cada plataforma (analogía de restaurante)
+
+Antes de meterte a los pasos, esto te ahorra confusión: cada plataforma hace UNA
+cosa distinta, y las tres trabajan juntas como un restaurante.
+
+- **GitHub = la bodega central del código.** Guarda la copia maestra de tu
+  proyecto en internet. Sirve de respaldo (si tu compu se dañara, el código
+  sigue existiendo ahí) y es de donde Render **lee** el código para publicarlo.
+  Cuando haces `git push`, mandas tu código del taller (tu compu) a esta bodega.
+
+- **Neon = la memoria de la app (la base de datos).** Aquí viven los **datos**:
+  usuarios, reservas, avisos, reportes, votos... todo lo que la gente crea al
+  usar la app. En tu compu esa memoria es el archivo `mi_aguja.db`; en la nube
+  es PostgreSQL, una base de datos profesional que vive en Neon.
+  ¿Por qué separada de Render? Porque Render **borra el disco de su servidor
+  en cada actualización**. Si los datos vivieran ahí, cada `git push` borraría
+  todas las reservas y usuarios. Neon los guarda aparte, permanentes, pase lo
+  que pase con el servidor.
+
+- **Render = el local del restaurante, con dos empleados:**
+  - **mi-aguja-api** (el cocinero 🧑‍🍳): una computadora encendida 24/7 corriendo
+    tu backend de Python. Recibe peticiones ("dame los avisos", "crea esta
+    reserva"), consulta la memoria en Neon, y responde.
+  - **mi-aguja-web** (el mesero 🤵): entrega los archivos del frontend (React
+    ya compilado) a cada navegador que visita tu URL. No piensa — solo reparte
+    la "cara" de la app.
+
+**Cómo fluye todo cuando un residente usa la app:**
+```
+Celular del residente
+   → mi-aguja-web le entrega la app (Render)
+   → la app pide datos a mi-aguja-api (Render)
+   → la api lee/escribe en la base de datos (Neon)
+```
+
+⚠️ **Ojo:** tu compu y la nube tienen memorias SEPARADAS. Si creas una reserva
+en la URL pública, NO aparece en tu `localhost` (y viceversa) — localhost usa
+el archivo SQLite local, la nube usa Neon. Son dos mundos. Esto es bueno:
+puedes experimentar en tu compu sin miedo a romper lo que ven los clientes.
+
+---
+
+## 🔁 Cómo editar la app una vez que ya está publicada
+
+Regla de oro: **la nube nunca se edita directamente — se edita en tu compu y
+se "empuja"**. Tu compu es el taller; la nube es la tienda.
+
+```
+1. Editamos el código aquí (vos y Claude) → probás en http://localhost:5173
+2. Cuando está listo:
+     git add -A
+     git commit -m "descripción del cambio"
+     git push
+3. Render detecta el push → reconstruye solo (~5 min)
+4. La URL pública ya tiene la nueva versión ✅
+```
+
+Eso es todo. Cada `git push` = actualización automática en internet. Los
+residentes solo recargan la página (o reabren la app instalada) y ya tienen
+lo nuevo. Ni Google ni Apple ni instaladores de por medio.
+
+---
+
 ## Paso 1 — Cuenta de GitHub y subir el código
 
 Render despliega leyendo tu código desde GitHub.
@@ -30,6 +93,10 @@ git push -u origin main
 
 > Si te pide iniciar sesión, se abre el navegador y autorizas. Si algo falla,
 > pídele ayuda a Claude con el mensaje de error.
+
+> ✅ **Ya hecho (2026-07-01):** el repo real de Wilfredo es
+> `github.com/wilfredobp68/Mi-aguja`. Si alguna vez necesitas re-verificar el
+> remoto configurado: `git remote -v`.
 
 ---
 
