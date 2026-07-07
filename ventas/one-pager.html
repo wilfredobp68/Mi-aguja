@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Mi Aguja · Presentación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ===================================================================
+     one-pager.html — Hoja de presentación de Mi Aguja (para imprimir a PDF).
+     Cómo usar: abrir en el navegador -> Ctrl+P -> "Guardar como PDF".
+     Personalizar: cambiar el nombre/telefono al final (marcados con [ ]).
+     =================================================================== */
+  :root {
+    --verde: #1b4332;
+    --verde-profundo: #123026;
+    --oro: #c9a84c;
+    --fondo: #fafaf7;
+    --texto: #2a2a2a;
+    --suave: #5b5b5b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", sans-serif;
+    color: var(--texto);
+    background: #e5e5e5;
+    line-height: 1.45;
+  }
+  .hoja {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: var(--fondo);
+    padding: 16mm 15mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .display { font-family: "Playfair Display", serif; }
+
+  /* ---------- Encabezado ---------- */
+  header {
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 2px solid var(--oro);
+    padding-bottom: 14px; margin-bottom: 18px;
+  }
+  .logo {
+    width: 54px; height: 54px; border-radius: 14px;
+    background: var(--verde); color: var(--oro);
+    display: grid; place-items: center;
+    font-family: "Playfair Display", serif; font-weight: 800; font-size: 30px;
+    flex-shrink: 0;
+  }
+  .marca h1 { font-size: 30px; color: var(--verde); letter-spacing: -0.5px; }
+  .marca p { color: var(--oro); font-weight: 600; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+
+  h2.seccion {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--oro); font-weight: 700; margin-bottom: 8px;
+  }
+
+  /* ---------- Problema ---------- */
+  .intro { font-size: 15px; color: var(--suave); margin-bottom: 16px; }
+  .intro strong { color: var(--verde); }
+
+  /* ---------- Módulos ---------- */
+  .modulos {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    margin-bottom: 18px;
+  }
+  .modulo {
+    background: #fff; border: 1px solid #0000000d; border-radius: 12px;
+    padding: 10px 12px; display: flex; align-items: center; gap: 9px;
+  }
+  .modulo .ico { font-size: 18px; }
+  .modulo .txt { font-size: 12.5px; font-weight: 600; color: var(--verde); }
+
+  /* ---------- Diferenciadores ---------- */
+  .por-que { margin-bottom: 16px; }
+  .por-que ul { list-style: none; }
+  .por-que li {
+    display: flex; gap: 9px; align-items: flex-start;
+    font-size: 13.5px; margin-bottom: 6px;
+  }
+  .por-que .check { color: var(--oro); font-weight: 800; flex-shrink: 0; }
+  .por-que li strong { color: var(--verde); }
+
+  /* ---------- Oferta ---------- */
+  .oferta {
+    background: var(--verde); color: #fff; border-radius: 16px;
+    padding: 18px 22px; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .oferta .sello {
+    background: var(--oro); color: var(--verde-profundo);
+    font-family: "Playfair Display", serif; font-weight: 800;
+    border-radius: 50%; width: 84px; height: 84px; flex-shrink: 0;
+    display: grid; place-items: center; text-align: center; line-height: 1.1;
+    font-size: 17px;
+  }
+  .oferta h3 { font-family: "Playfair Display", serif; font-size: 20px; margin-bottom: 4px; }
+  .oferta p { font-size: 13.5px; color: #ffffffcc; }
+
+  /* ---------- Contacto ---------- */
+  footer {
+    margin-top: auto; border-top: 1px solid #00000014; padding-top: 12px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .contacto strong { color: var(--verde); font-size: 15px; display: block; }
+  .contacto span { color: var(--suave); font-size: 13px; }
+  .pie { color: var(--suave); font-size: 11px; text-align: right; }
+
+  @media print {
+    body { background: #fff; }
+    .hoja { margin: 0; box-shadow: none; }
+  }
+  @page { size: A4; margin: 0; }
+</style>
+</head>
+<body>
+  <div class="hoja">
+
+    <header>
+      <div class="logo">A</div>
+      <div class="marca">
+        <h1 class="display">Mi Aguja</h1>
+        <p>El sistema nervioso digital de su residencial</p>
+      </div>
+    </header>
+
+    <p class="intro">
+      Hoy los avisos importantes se pierden entre grupos de WhatsApp saturados, las reservas
+      de amenidades se anotan en cuadernos que se solapan, y la portería registra visitas en
+      papel sin respaldo ni control. <strong>Mi Aguja ordena todo eso en una sola app</strong>,
+      elegante y fácil de usar hasta para los residentes mayores — conectando a la
+      administración, los residentes y la portería.
+    </p>
+
+    <h2 class="seccion">Todo el residencial, en una sola app</h2>
+    <div class="modulos">
+      <div class="modulo"><span class="ico">📣</span><span class="txt">Avisos y comunicados</span></div>
+      <div class="modulo"><span class="ico">🏊</span><span class="txt">Reservas de amenidades</span></div>
+      <div class="modulo"><span class="ico">👤</span><span class="txt">Visitantes en vivo</span></div>
+      <div class="modulo"><span class="ico">🔑</span><span class="txt">Pases de acceso con QR</span></div>
+      <div class="modulo"><span class="ico">📦</span><span class="txt">Encomiendas</span></div>
+      <div class="modulo"><span class="ico">💳</span><span class="txt">Pagos del hogar</span></div>
+      <div class="modulo"><span class="ico">🔧</span><span class="txt">Reportes de mantenimiento</span></div>
+      <div class="modulo"><span class="ico">🚨</span><span class="txt">Botón de emergencia (SOS)</span></div>
+      <div class="modulo"><span class="ico">🗳️</span><span class="txt">Encuestas y votaciones</span></div>
+    </div>
+
+    <div class="por-que">
+      <h2 class="seccion">Por qué Mi Aguja</h2>
+      <ul>
+        <li><span class="check">✓</span><span><strong>Todo en uno.</strong> No solo la puerta — todo el residencial en una plataforma.</span></li>
+        <li><span class="check">✓</span><span><strong>Sin hardware ni instalación cara.</strong> Funciona con los celulares que ya tienen.</span></li>
+        <li><span class="check">✓</span><span><strong>Se instala en 10 segundos</strong> desde un enlace de WhatsApp — sin tiendas ni esperas.</span></li>
+        <li><span class="check">✓</span><span><strong>Personalizada</strong> con el nombre y el logo de su residencial.</span></li>
+        <li><span class="check">✓</span><span><strong>Seguridad en vivo.</strong> Visitantes y emergencias en tiempo real, en la mano del residente.</span></li>
+      </ul>
+    </div>
+
+    <div class="oferta">
+      <div class="sello">60 días<br>gratis</div>
+      <div>
+        <h3>Pruébela sin compromiso</h3>
+        <p>Configuramos su residencial con su marca, cargamos a los residentes y lo acompañamos
+           en cada paso. Si no les sirve, no pasa nada. Si les gusta, conversamos.</p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="contacto">
+        <strong>Wilfredo [Apellido]</strong>
+        <span>[Su teléfono / WhatsApp] · wilfredobp68@gmail.com</span>
+      </div>
+      <div class="pie">
+        Mi Aguja<br>Gestión de residenciales privados
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
